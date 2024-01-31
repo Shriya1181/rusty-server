@@ -1,6 +1,6 @@
 # Install Rust
 
-Command to install rust: (paste this is the terminal)
+Command to install rust: (paste this in the terminal)
 
 1. `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 

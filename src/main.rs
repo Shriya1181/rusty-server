@@ -34,12 +34,18 @@ pub fn handle_client(mut stream: TcpStream) {
                             "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{{\"message\": \"Welcome to the Rusty endpoint!\"}}"
                         );
             }
-            // else if request.contains("/sleep") {
-            //     std::thread::sleep(std::time::Duration::from_secs(5));
-            //     response = format!(
-            //         "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{{\"message\": \"I had a sweet nap!\"}}"
-            //     );
-            // }
+            else if request.contains("/sleep") {
+                 std::thread::sleep(std::time::Duration::from_secs(5));
+                 response = format!(
+                     "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{{\"message\": \"I had a sweet nap!\"}}"
+                );
+            }
+            else if request.contains("/shriya") {
+                     response = format!(
+                         "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{{\"message\": \" {} is now a rustacean!\"}}",
+                         name
+                     );
+            }
             // create a new endpoint with /your-name, and send a custom message, "your-name is now a rustacean!"
             else {
                 response = format!(
@@ -67,11 +73,11 @@ fn main() {
 
     for stream in listener.incoming() {
         let stream = stream.unwrap();
-        // thread::spawn(||{
+        thread::spawn(||{
             handle_client(stream);
-        // });
+        });
         // pool.execute(||{
-        //     handle_client(stream);
+           //  handle_client(stream);
         // });
     }
 }

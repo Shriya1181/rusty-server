@@ -20,11 +20,9 @@ pub fn handle_client(mut stream: TcpStream) {
     match method {
         "GET" => {
             // Handle GET requests
-            let name = "Mardav";
+            let name = "Mardav"; // Replace this with your name
 
-            // Check if the request is for the "/rusty" endpoint
             if request.contains("/rusty") {
-                // Respond with a custom message for the "/rusty" endpoint
                 let response = format!(
                             "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{{\"message\": \"Welcome to the Rusty endpoint!\"}}"
                         );
@@ -34,8 +32,9 @@ pub fn handle_client(mut stream: TcpStream) {
                 stream.write_all(response.as_bytes()).unwrap();
                 stream.flush().unwrap();
                 println!("Response sent!");
-            } else {
-                // Respond with a JSON object for the default endpoint
+            }
+            // create a new endpoint with /your-name, and send a custom message, "your-name is now a rustacean!"
+            else {
                 let response = format!(
                             "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{{\"name\": \"Welcome rustacean, {}\"}}",
                             name
@@ -66,3 +65,29 @@ fn main() {
         handle_client(stream);
     }
 }
+
+// Rocket Server(demo): comment out the above code to run this, and uncomment the below code to get it running
+
+// #[macro_use]
+// extern crate rocket;
+
+// use rocket::serde::json::Json;
+// use rocket::serde::json::Value;
+// use serde_json::json;
+
+// #[get("/")]
+// fn index() -> &'static str {
+//     "Server Running Successfully!"
+// }
+
+// #[get("/name/<person>")]
+// fn add_person(person: &str) -> Value {
+//     json!({
+//         "message": format!("{person}, is now a rustacean!")
+//     })
+// }
+
+// #[launch]
+// pub fn rocket() -> _ {
+//     rocket::build().mount("/", routes![index, add_person])
+// }

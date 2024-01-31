@@ -1,5 +1,6 @@
 use std::{
     fs,
+    thread,
     io::prelude::*,
     net::{TcpListener, TcpStream},
 };
@@ -17,35 +18,35 @@ pub fn handle_client(mut stream: TcpStream) {
         .next()
         .unwrap();
 
+    println!("Request: {}", request);
+
     match method {
         "GET" => {
             // Handle GET requests
             let name = "Mardav"; // Replace this with your name
+            let response:String;
 
             if request.contains("/rusty") {
-                let response = format!(
+                response = format!(
                             "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{{\"message\": \"Welcome to the Rusty endpoint!\"}}"
                         );
-
-                println!("Request: {}", request);
-
-                stream.write_all(response.as_bytes()).unwrap();
-                stream.flush().unwrap();
-                println!("Response sent!");
             }
+            // else if request.contains("/sleep") {
+            //     std::thread::sleep(std::time::Duration::from_secs(5));
+            //     response = format!(
+            //         "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{{\"message\": \"I had a sweet nap!\"}}"
+            //     );
+            // }
             // create a new endpoint with /your-name, and send a custom message, "your-name is now a rustacean!"
             else {
-                let response = format!(
+                response = format!(
                             "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{{\"name\": \"Welcome rustacean, {}\"}}",
                             name
                         );
-
-                println!("Request: {}", request);
-
-                stream.write_all(response.as_bytes()).unwrap();
-                stream.flush().unwrap();
-                println!("Response sent!");
             }
+            stream.write_all(response.as_bytes()).unwrap();
+            stream.flush().unwrap();
+            println!("Response sent!");
         }
 
         _ => {
@@ -62,7 +63,9 @@ fn main() {
 
     for stream in listener.incoming() {
         let stream = stream.unwrap();
-        handle_client(stream);
+        // thread::spawn(||{
+            handle_client(stream);
+        // });
     }
 }
 

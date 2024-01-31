@@ -26,7 +26,7 @@ pub fn handle_client(mut stream: TcpStream) {
     match method {
         "GET" => {
             // Handle GET requests
-            let name = "Mardav"; // Replace this with your name
+            let name = "Shriya"; // Replace this with your name
             let response:String;
 
             if request.contains("/rusty") {

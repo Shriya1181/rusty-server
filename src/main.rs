@@ -4,6 +4,9 @@ use std::{
     io::prelude::*,
     net::{TcpListener, TcpStream},
 };
+ 
+pub mod thread_pool;
+use thread_pool::ThreadPool;
 
 pub fn handle_client(mut stream: TcpStream) {
     let mut buffer = [0; 1024];
@@ -60,11 +63,15 @@ pub fn handle_client(mut stream: TcpStream) {
 fn main() {
     let listener = TcpListener::bind("0.0.0.0:7878").unwrap();
     println!("Server listening on port 7878");
+    // let pool = ThreadPool::new(4);
 
     for stream in listener.incoming() {
         let stream = stream.unwrap();
         // thread::spawn(||{
             handle_client(stream);
+        // });
+        // pool.execute(||{
+        //     handle_client(stream);
         // });
     }
 }
